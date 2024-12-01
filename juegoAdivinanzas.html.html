@@ -1,0 +1,80 @@
+<!doctype html>
+<!-- Define el tipo de documento HTML -->
+<html lang="es">
+  <!-- Establece el idioma del documento como español -->
+  <head>
+    <!-- Metadatos de la página -->
+    <meta charset="UTF-8" />
+    <!-- Define la codificación de caracteres como UTF-8 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Ajusta la escala inicial para adaptarse a diferentes dispositivos -->
+    <title>Juego de Adivinanza</title>
+    <!-- Título de la página que aparece en la pestaña del navegador -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Vincula un archivo CSS externo para los estilos de la página -->
+  </head>
+  <body>
+    <!-- Contenido principal de la página -->
+    <div class="container">
+      <!-- Contenedor para agrupar los elementos del juego -->
+      <h1>Juego de Adivinanza</h1>
+      <!-- Título principal del juego -->
+      <p>Adivina un número entre 1 y 100</p>
+      <!-- Instrucción para el jugador -->
+      <input type="number" id="guess" placeholder="Escribe tu número">
+      <!-- Campo de entrada para que el usuario escriba su número -->
+      <button onclick="verificarAdivinanza()" type="submit">Enviar Adivinanza</button>
+      <!-- Botón que llama a la función `verificarAdivinanza()` al hacer clic -->
+      <p id="retroalimentacion"></p>
+      <!-- Elemento para mostrar mensajes al jugador (retroalimentación) -->
+    </div>
+
+    <script>
+      // Genera un número aleatorio entre 1 y 100 (inclusive) que el jugador debe adivinar
+      let numeroAleatorio = Math.floor(Math.random() * 100) + 1;
+
+      // Número máximo de intentos permitidos para el jugador
+      let intentos = 10;
+
+      // Función que se ejecuta cuando el jugador hace clic en "Enviar Adivinanza"
+      function verificarAdivinanza() {
+        intentos--; // Reduce el número de intentos disponibles en 1
+
+        // Obtiene los elementos del DOM necesarios para manejar la entrada del usuario y mostrar retroalimentación
+        const elementoEntrada = document.getElementById("guess"); // Campo donde el jugador escribe su número
+        const elementoRetroalimentacion = document.getElementById("retroalimentacion"); // Mensaje para el jugador
+
+        // Obtiene el número que el jugador ingresó
+        const adivinanza = elementoEntrada.value;
+
+        // Bucle para verificar si el número ingresado coincide con el número aleatorio
+        while (intentos > 0) {
+          if (adivinanza == numeroAleatorio) {
+            // Si el número ingresado es correcto
+            intentos = 0; // Finaliza el juego
+            elementoRetroalimentacion.innerHTML = "¡Felicidades! Has acertado."; // Muestra mensaje de éxito
+            elementoRetroalimentacion.style.color = "green"; // Cambia el color del texto a verde
+            break; // Sale del bucle
+          } else if (adivinanza < numeroAleatorio) {
+            // Si el número ingresado es menor que el número aleatorio
+            elementoRetroalimentacion.innerHTML = `¡Demasiado bajo! Intenta de nuevo. Te quedan ${intentos} intentos.`; // Muestra mensaje de ayuda
+            elementoRetroalimentacion.style.color = "red"; // Cambia el color del texto a rojo
+            break; // Sale del bucle
+          } else {
+            // Si el número ingresado es mayor que el número aleatorio
+            elementoRetroalimentacion.innerHTML = `¡Demasiado alto! Intenta de nuevo. Te quedan ${intentos} intentos.`; // Muestra mensaje de ayuda
+            elementoRetroalimentacion.style.color = "red"; // Cambia el color del texto a rojo
+            break; // Sale del bucle
+          }
+        }
+
+        // Si no quedan intentos y el jugador no adivinó el número
+        if (intentos === 0 && adivinanza != numeroAleatorio) {
+          elementoRetroalimentacion.innerHTML = 
+            `Lo siento, ¡te has quedado sin intentos! El número correcto era ${numeroAleatorio}.`; // Muestra mensaje de fin del juego
+          elementoRetroalimentacion.style.color = "red"; // Cambia el color del texto a rojo
+        }
+      }
+    </script>
+  </body>
+</html>
